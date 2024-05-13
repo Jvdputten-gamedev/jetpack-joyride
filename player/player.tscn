@@ -1,17 +1,77 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgskfq3q0orby"]
+[gd_scene load_steps=14 format=3 uid="uid://dgskfq3q0orby"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_bjwf0"]
 [ext_resource type="Texture2D" uid="uid://cxq6e3mv8saqt" path="res://core/assets/simple_shapes/square_64.png" id="1_hnr85"]
+[ext_resource type="Texture2D" uid="uid://icswp0yuvx4v" path="res://core/assets/particles/PNG (Transparent)/circle_05.png" id="2_bvu2m"]
+[ext_resource type="Texture2D" uid="uid://ddwphj7wvesxp" path="res://core/assets/simple_shapes/triangle_64.png" id="3_mhh48"]
+[ext_resource type="AudioStream" uid="uid://bjxuekbvnpim8" path="res://player/jetpack.mp3" id="5_0y5hm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ytb2u"]
 size = Vector2(62, 62)
 
+[sub_resource type="Curve" id="Curve_ub5sh"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.74359, 0.769231), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6gula"]
+curve = SubResource("Curve_ub5sh")
+
+[sub_resource type="Gradient" id="Gradient_gdin8"]
+offsets = PackedFloat32Array(0, 0.951456)
+colors = PackedColorArray(0.683065, 0.515908, 0.109069, 1, 0.831016, 0.299554, 0.206437, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mf4by"]
+gradient = SubResource("Gradient_gdin8")
+
+[sub_resource type="Curve" id="Curve_juo72"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.516483), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hvt8q"]
+curve = SubResource("Curve_juo72")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x3srq"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 67.326
+initial_velocity_min = 15.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 300, 0)
+tangential_accel_min = 0.01
+tangential_accel_max = 64.34
+scale_min = 0.1
+scale_max = 0.15
+scale_curve = SubResource("CurveTexture_hvt8q")
+color_ramp = SubResource("GradientTexture1D_mf4by")
+alpha_curve = SubResource("CurveTexture_6gula")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_bjwf0")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ytb2u")
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="RocketParticles" type="GPUParticles2D" parent="Visuals"]
+unique_name_in_owner = true
+position = Vector2(-48, 29)
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_x3srq")
+texture = ExtResource("2_bvu2m")
+
+[node name="Rocket" type="Sprite2D" parent="Visuals"]
+self_modulate = Color(0, 0.368627, 0.368627, 1)
+position = Vector2(-32, 1)
+texture = ExtResource("3_mhh48")
+
+[node name="Body" type="Sprite2D" parent="Visuals"]
 modulate = Color(0, 0.67451, 0.682353, 1)
 texture = ExtResource("1_hnr85")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ytb2u")
+[node name="JetpackSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_0y5hm")
+pitch_scale = 0.26
+bus = &"Sfx"

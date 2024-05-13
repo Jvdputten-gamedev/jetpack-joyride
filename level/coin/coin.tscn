@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0s7mnxhsbpmn"]
+
+[ext_resource type="Texture2D" uid="uid://ba8q1or1j2v6a" path="res://core/assets/simple_shapes/circle_64.png" id="1_6bs4h"]
+[ext_resource type="Script" path="res://level/coin/coin.gd" id="1_jw415"]
+[ext_resource type="Texture2D" uid="uid://cxq6e3mv8saqt" path="res://core/assets/simple_shapes/square_64.png" id="2_bj85w"]
+[ext_resource type="AudioStream" uid="uid://b672kx4knjqoq" path="res://level/coin/pickup.mp3" id="4_ntkio"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vdw3q"]
+
+[node name="Coin" type="Node2D"]
+script = ExtResource("1_jw415")
+
+[node name="visuals" type="Node2D" parent="."]
+scale = Vector2(0.4, 0.4)
+
+[node name="Outer" type="Sprite2D" parent="visuals"]
+modulate = Color(1, 1, 0.27451, 1)
+texture = ExtResource("1_6bs4h")
+
+[node name="Inner" type="Sprite2D" parent="visuals"]
+self_modulate = Color(1, 0.811765, 0.137255, 1)
+clip_children = 2
+scale = Vector2(0.794194, 0.799998)
+texture = ExtResource("1_6bs4h")
+
+[node name="highlight" type="Sprite2D" parent="visuals/Inner"]
+self_modulate = Color(1, 1, 1, 0.360784)
+position = Vector2(19.4873, 13.7946)
+rotation = 0.672861
+scale = Vector2(0.0805848, 1.77142)
+texture = ExtResource("2_bj85w")
+
+[node name="highlight2" type="Sprite2D" parent="visuals/Inner"]
+self_modulate = Color(1, 1, 1, 0.360784)
+position = Vector2(12.3444, 6.65171)
+rotation = 0.672861
+scale = Vector2(0.0789603, 1.75544)
+texture = ExtResource("2_bj85w")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(1.28, 1.28)
+shape = SubResource("CircleShape2D_vdw3q")
+
+[node name="PickupSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ntkio")
+volume_db = -12.0
+pitch_scale = 0.81
+bus = &"Sfx"

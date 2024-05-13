@@ -1,12 +1,87 @@
-[gd_scene load_steps=3 format=3 uid="uid://j7lsyil81xto"]
+[gd_scene load_steps=12 format=3 uid="uid://j7lsyil81xto"]
 
 [ext_resource type="PackedScene" uid="uid://dgskfq3q0orby" path="res://player/player.tscn" id="1_ox0is"]
 [ext_resource type="PackedScene" uid="uid://bfrurl5n2k2qf" path="res://level/floor/floor.tscn" id="2_ja8dn"]
+[ext_resource type="PackedScene" uid="uid://c0s7mnxhsbpmn" path="res://level/coin/coin.tscn" id="3_h0dxb"]
+[ext_resource type="Script" path="res://ui/score_label.gd" id="4_5gbv6"]
+[ext_resource type="Shader" path="res://core/vignette.gdshader" id="4_q13ai"]
+[ext_resource type="PackedScene" uid="uid://b0036oswoqfrm" path="res://level/spawner/spawner_manager.tscn" id="6_uyh38"]
+[ext_resource type="Script" path="res://level/spawner/spawner_manager.gd" id="7_rddj2"]
+[ext_resource type="Script" path="res://level/spawner/garbage.gd" id="8_uwuxi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bltio"]
+shader = ExtResource("4_q13ai")
+shader_parameter/alpha = 0.2
+shader_parameter/inner_radius = 0.7
+shader_parameter/outer_radius = 1.4
+
+[sub_resource type="SystemFont" id="SystemFont_puqsr"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ok8i3"]
+size = Vector2(95, 704)
 
 [node name="Main" type="Node"]
 
-[node name="Player" parent="." instance=ExtResource("1_ox0is")]
-position = Vector2(911, 733)
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2928, 0.3864, 0.48, 1)
 
-[node name="Floor" parent="." instance=ExtResource("2_ja8dn")]
+[node name="Player" parent="." instance=ExtResource("1_ox0is")]
+position = Vector2(455, 894)
+
+[node name="Level" type="Node2D" parent="."]
+
+[node name="Floor" parent="Level" instance=ExtResource("2_ja8dn")]
 position = Vector2(946, 969)
+
+[node name="Ceiling" parent="Level" instance=ExtResource("2_ja8dn")]
+position = Vector2(909, 173)
+rotation = 3.14159
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Vignette" type="ColorRect" parent="UI"]
+material = SubResource("ShaderMaterial_bltio")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="Label" type="Label" parent="UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("SystemFont_puqsr")
+theme_override_font_sizes/font_size = 64
+text = "Score"
+script = ExtResource("4_5gbv6")
+
+[node name="SpawnerManager" parent="." instance=ExtResource("6_uyh38")]
+position = Vector2(2092, 581)
+script = ExtResource("7_rddj2")
+coin_scene = ExtResource("3_h0dxb")
+
+[node name="Garbage" type="Area2D" parent="."]
+script = ExtResource("8_uwuxi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Garbage"]
+position = Vector2(-140, 567)
+shape = SubResource("RectangleShape2D_ok8i3")

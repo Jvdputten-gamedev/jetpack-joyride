@@ -1,6 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfrurl5n2k2qf"]
+[gd_scene load_steps=5 format=3 uid="uid://bfrurl5n2k2qf"]
 
+[ext_resource type="Shader" path="res://level/floor/floor.gdshader" id="1_0i5vi"]
 [ext_resource type="Texture2D" uid="uid://cxq6e3mv8saqt" path="res://core/assets/simple_shapes/square_64.png" id="1_7gniq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mu3c4"]
+shader = ExtResource("1_0i5vi")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gejpp"]
 
@@ -8,7 +12,8 @@
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.741176, 0.741176, 0.741176, 1)
-scale = Vector2(53.76, 1)
+material = SubResource("ShaderMaterial_mu3c4")
+scale = Vector2(100, 1)
 texture = ExtResource("1_7gniq")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b0036oswoqfrm"]
+
+[node name="SpawnerManager" type="Node2D"]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 6.077
+autostart = true
