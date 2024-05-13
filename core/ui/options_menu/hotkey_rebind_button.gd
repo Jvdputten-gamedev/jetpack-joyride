@@ -3,7 +3,7 @@ extends Control
 
 @export var label: Label
 @export var button: Button
-@export var action_name: String = "move_left"
+@export var action_name: String
 
 func _ready():
 	set_process_unhandled_key_input(false)
@@ -16,13 +16,8 @@ func set_action_name() -> void:
 
 	# add all action names here and a name that will appear on the button>>>.
 	match action_name:
-		"move_left":
-			label.text = "Move Left"
-		"move_right": 
-			label.text = "Move Right"
-		"jump":
-			label.text = "Jump"
-
+		"fly":
+			label.text = "Fly up"
 
 func set_text_for_key() -> void:
 	var action_events = InputMap.action_get_events(action_name)
